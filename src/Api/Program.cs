@@ -11,14 +11,16 @@ using Infrastructure.DbContext;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.IO.Compression;
 
 namespace Api
 {
-    public class Program
+    public partial class Program
     {
-        public static void Main(string[] args)
+        public  static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +43,7 @@ namespace Api
             builder.Services.AddSwaggerGen();
 
             builder.Services.Configure<GzipCompressionProviderOptions>(options => options.Level = CompressionLevel.Optimal);
+            builder.Services.AddResponseCompression(options => { options.Providers.Add<GzipCompressionProvider>(); });
 
             builder.Services.AddDbContext<Context>(options =>
             {
@@ -48,14 +51,17 @@ namespace Api
                     a => { a.MigrationsAssembly("Infrastructure"); });
             });
 
-            var app = builder.Build();
+            builder.Services.AddSwaggerGen(SetupSwagger());
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+            using var app = builder.Build();
+
+            RunMigration();
+
+            app.UseCorrelationId();
+
+            AddExceptionHandler();
+
+            AddSwagger();
 
             app.UseHttpsRedirection();
 
@@ -65,26 +71,16 @@ namespace Api
 
             app.Run();
 
-            RunMigration();
-
-            AddExceptionHandler();
-
-            AddSwagger();
-
-            app.UseCorrelationId();
-
-  
-
             void RunMigration()
             {
                 using var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
 
-                if (!serviceScope.ServiceProvider.GetRequiredService<DbContext>().Database.GetPendingMigrations().Any())
+                if (!serviceScope.ServiceProvider.GetRequiredService<Context>().Database.GetPendingMigrations().Any())
                 {
                     return;
                 }
 
-                serviceScope.ServiceProvider.GetRequiredService<DbContext>().Database.Migrate();
+                serviceScope.ServiceProvider.GetRequiredService<Context>().Database.Migrate();
             }
 
             Action<CorrelationIdOptions> ConfigureCorrelationId()
@@ -125,6 +121,16 @@ namespace Api
             {
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CF Api"));
+            }
+
+            Action<SwaggerGenOptions> SetupSwagger()
+            {
+                return c =>
+                {
+                    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Desafio Técnico - Eclipse Works API", Version = "v1" });
+
+                    c.CustomSchemaIds(x => x.FullName);
+                };
             }
         }
     }
