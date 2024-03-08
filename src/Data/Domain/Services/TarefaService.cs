@@ -8,18 +8,13 @@ namespace Domain.Services
 {
     public class TarefaService(ITarefaRepository tarefaRepository) : ITarefaService
     {
-        private const string TAREFA_NULO = "Tarefa nulo.";
-        private const string PROJETO_NULO = "Projeto nulo.";
-        private const string ID_INVALIDO = "Tarefa nulo.";
-        private const string TAREFAS_PROJETO_20 = "Um projeto não pode conter mais que 20 tarefas.";
-
         public async Task<long> CreateAsync(Tarefa tarefa, Projeto? projeto,CancellationToken cancellationToken)
         {
             if (tarefa is null)
-                throw new Exceptions.ValidationException(TAREFA_NULO);
+                throw new Exceptions.ValidationException(Messages.TAREFA_NULO);
 
             if (projeto is null)
-                throw new Exceptions.ValidationException(PROJETO_NULO);
+                throw new Exceptions.ValidationException(Messages.PROJETO_NULO);
 
             Validate(tarefa,projeto);
 
@@ -37,19 +32,19 @@ namespace Domain.Services
             tarefa.ValidateProjeto();
 
             if(projeto.Tarefas.Any() && projeto.Tarefas.Count > 20)
-                throw new Domain.Exceptions.ValidationException(TAREFAS_PROJETO_20);
+                throw new Domain.Exceptions.ValidationException(Messages.TAREFAS_PROJETO_20);
         }
 
         public async Task UpdateAsync(long id, Tarefa tarefa,Projeto? projeto, CancellationToken cancellationToken)
         {
             if (id <= 0) 
-                throw new Exceptions.ValidationException(ID_INVALIDO);
+                throw new Exceptions.ValidationException(Messages.ID_INVALIDO);
 
             if (tarefa is null)
-                throw new Exceptions.ValidationException(TAREFA_NULO);
+                throw new Exceptions.ValidationException(Messages.TAREFA_NULO);
 
             if (projeto is null)
-                throw new Exceptions.ValidationException(PROJETO_NULO);
+                throw new Exceptions.ValidationException(Messages.PROJETO_NULO);
 
             var entity = await tarefaRepository.GetByIdAsync(id, cancellationToken) ?? throw new EntityNotFoundException(id);
 
@@ -66,7 +61,7 @@ namespace Domain.Services
         public async Task DeleteAsync(long id, CancellationToken cancellationToken)
         {
             if (id <= 0) 
-                throw new Domain.Exceptions.ValidationException(ID_INVALIDO);
+                throw new Domain.Exceptions.ValidationException(Messages.ID_INVALIDO);
 
             var entity = await tarefaRepository.GetByIdAsync(id, cancellationToken) ?? throw new EntityNotFoundException(id);
 

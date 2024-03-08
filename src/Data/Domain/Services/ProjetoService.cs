@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Exceptions;
 using Domain.Repositories;
 using Domain.Services.Interfaces;
 using System.ComponentModel.DataAnnotations;
@@ -10,7 +11,7 @@ namespace Domain.Services
         public async Task<long> CreateAsync(Projeto projeto, CancellationToken cancellationToken)
         {
             if (projeto is null)
-                throw new ValidationException("Projeto nulo.");
+                throw new Domain.Exceptions.ValidationException(Messages.PROJETO_NULO);
 
             Validate(projeto);
 
@@ -33,9 +34,19 @@ namespace Domain.Services
             throw new NotImplementedException();
         }
 
-        public Task DeleteAsync(long id, CancellationToken cancellationToken)
+        public async Task DeleteAsync(long id, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (id <= 0)
+                throw new Domain.Exceptions.ValidationException(Messages.ID_INVALIDO);
+
+            var entity = await projetoRepository.GetByIdAsync(id, cancellationToken) ?? throw new EntityNotFoundException(id);
+
+            if (entity.Tarefas.Any())
+                throw new Domain.Exceptions.ValidationException(Messages.EXCLUIR_PROJETO);
+
+            projetoRepository.Remove(entity);
+
+            await projetoRepository.SaveChangesAsync(cancellationToken);
         }
 
         public async Task<IEnumerable<Projeto>> GetAll(CancellationToken cancellationToken)
