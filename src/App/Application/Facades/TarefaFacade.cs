@@ -1,6 +1,7 @@
 ﻿using Application.Dtos;
 using Application.Facades.Interfaces;
 using AutoMapper;
+using Domain.Services;
 using Domain.Services.Interfaces;
 
 namespace Application.Facades
@@ -26,6 +27,15 @@ namespace Application.Facades
         public async Task DeleteAsync(long id, CancellationToken cancellationToken)
         {
             await tarefaService.DeleteAsync(id, cancellationToken);
+        }
+
+        public async Task<TarefaResponseDto> GetByProjeto(long idProjeto,CancellationToken cancellationToken)
+        {
+            var result = await tarefaService.GetByProjeto(idProjeto,cancellationToken);
+
+            var tarefa = mapper.Map<TarefaResponseDto>(result);
+
+            return tarefa;
         }
     }
 }

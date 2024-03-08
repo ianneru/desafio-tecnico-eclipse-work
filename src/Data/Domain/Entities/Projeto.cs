@@ -2,6 +2,7 @@
 {
     public class Projeto : EntityBase
     {
-        public required ICollection<Tarefa> Tarefas { get; set; }
+        public required string Titulo { get; set; }
+        public ICollection<Tarefa>? Tarefas { get; set; }
     }
 }

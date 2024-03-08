@@ -1,11 +1,13 @@
 ﻿using Domain.Enums;
 
-namespace Domain.Entities
+namespace Application.Dtos
 {
-    public class Tarefa : EntityBase
+    public class TarefaResponseDto
     {
+        public long Id { get; set; }
+
         public required string Titulo { get; set; }
-        
+
         public DateTime DataVencimento { get; set; }
 
         public EnumStatusTarefa Status { get; set; }

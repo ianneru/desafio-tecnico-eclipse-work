@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Exceptions;
 using Domain.Repositories;
 using Domain.Services.Interfaces;
 using System.ComponentModel.DataAnnotations;
@@ -10,13 +11,14 @@ namespace Domain.Services
         public async Task<long> CreateAsync(Tarefa tarefa, CancellationToken cancellationToken)
         {
             if (tarefa is null)
-                throw new ValidationException("Tarefa nulo.");
+                throw new Exceptions.ValidationException("Tarefa nulo.");
 
             Validate(tarefa);
 
             tarefa.SetCreatedDate();
 
             tarefaRepository.Add(tarefa);
+
             await tarefaRepository.SaveChangesAsync(cancellationToken);
 
             return tarefa.Id;
@@ -28,14 +30,43 @@ namespace Domain.Services
 
         }
 
-        public Task UpdateAsync(long id, Tarefa tarefa, CancellationToken cancellationToken)
+        public async Task UpdateAsync(long id, Tarefa tarefa, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (id <= 0) 
+                throw new Exceptions.ValidationException("Id inválido.");
+
+            if (tarefa is null)
+                throw new Exceptions.ValidationException("Tarefa nulo.");
+
+            var entity = await tarefaRepository.GetByIdAsync(id, cancellationToken) ?? throw new EntityNotFoundException(id);
+
+            Validate(tarefa);
+
+            entity.SetUpdatedDate();
+            entity.SetDataVencimento(tarefa.DataVencimento);
+            entity.SetTitulo(tarefa.Titulo);
+            entity.SetStatus(tarefa.Status);
+
+            await tarefaRepository.SaveChangesAsync(cancellationToken);
         }
 
-        public Task DeleteAsync(long id, CancellationToken cancellationToken)
+        public async Task DeleteAsync(long id, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (id <= 0) 
+                throw new Domain.Exceptions.ValidationException("Id inválido.");
+
+            var entity = await tarefaRepository.GetByIdAsync(id, cancellationToken) ?? throw new EntityNotFoundException(id);
+
+            tarefaRepository.Remove(entity);
+
+            await tarefaRepository.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<Tarefa> GetByProjeto(long idProjeto, CancellationToken cancellationToken)
+        {
+            var tarefa = await tarefaRepository.GetByIdAsync(idProjeto, cancellationToken);
+
+            return tarefa;
         }
     }
 }

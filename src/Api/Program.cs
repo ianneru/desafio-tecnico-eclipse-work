@@ -1,4 +1,6 @@
 
+using Api.Filters;
+using Api.Middlewares;
 using Application.Facades;
 using Application.Facades.Interfaces;
 using CF.Customer.Infrastructure.Mappers;
@@ -12,8 +14,8 @@ using Infrastructure.Repositories;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using NLog.Web;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using System;
 using System.IO.Compression;
 
 namespace Api
@@ -24,9 +26,9 @@ namespace Api
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            builder.Host.UseNLog();
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers(x => x.Filters.Add<ExceptionFilter>());
             builder.Services.AddProblemDetails();
             builder.Services.AddDefaultCorrelationId(ConfigureCorrelationId());
 
@@ -38,9 +40,9 @@ namespace Api
             builder.Services.AddTransient<ITarefaRepository, TarefaRepository>();
 
             builder.Services.AddAutoMapper(typeof(ProjetoProfile));
+            builder.Services.AddAutoMapper(typeof(TarefaProfile));
 
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
 
             builder.Services.Configure<GzipCompressionProviderOptions>(options => options.Level = CompressionLevel.Optimal);
             builder.Services.AddResponseCompression(options => { options.Providers.Add<GzipCompressionProvider>(); });
@@ -62,6 +64,10 @@ namespace Api
             AddExceptionHandler();
 
             AddSwagger();
+
+            app.UseMiddleware<LogExceptionMiddleware>();
+            app.UseMiddleware<LogRequestMiddleware>();
+            app.UseMiddleware<LogResponseMiddleware>();
 
             app.UseHttpsRedirection();
 

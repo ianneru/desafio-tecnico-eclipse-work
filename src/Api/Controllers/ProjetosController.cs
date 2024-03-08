@@ -33,5 +33,18 @@ namespace Api.Controllers
                 return BadRequest(e.Message);
             }
         }
+
+        [HttpPost]
+        [SwaggerResponse((int)HttpStatusCode.BadRequest, "Requisição Inválida.")]
+        [SwaggerResponse((int)HttpStatusCode.Created, "Projeto criado com sucesso.")]
+        public async Task<IActionResult> Post([FromBody] ProjetoRequestDto customerRequestDto, CancellationToken cancellationToken)
+        {
+            if (!ModelState.IsValid) 
+                return BadRequest(ModelState);
+
+            var id = await projetoFacade.CreateAsync(customerRequestDto, cancellationToken);
+
+            return CreatedAtAction(nameof(Get), new { id }, new { id });
+        }
     }
 }
