@@ -19,7 +19,7 @@ namespace Domain.Services
             projetoRepository.Add(projeto);
             await projetoRepository.SaveChangesAsync(cancellationToken);
 
-            return projeto.Id;
+            return projeto.IdProjeto;
         }
 
         private static void Validate(Projeto projeto)

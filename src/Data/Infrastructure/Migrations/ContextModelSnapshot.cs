@@ -24,11 +24,11 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Projeto", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<long>("IdProjeto")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("IdProjeto"));
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -40,18 +40,18 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime?>("Updated")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                    b.HasKey("IdProjeto");
 
                     b.ToTable("Projeto", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Tarefa", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<long>("IdTarefa")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("IdTarefa"));
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -59,11 +59,11 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("DataVencimento")
                         .HasColumnType("datetime2");
 
+                    b.Property<long>("IdProjeto")
+                        .HasColumnType("bigint");
+
                     b.Property<int>("Prioridade")
                         .HasColumnType("int");
-
-                    b.Property<long?>("ProjetoId")
-                        .HasColumnType("bigint");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -75,18 +75,22 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime?>("Updated")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                    b.HasKey("IdTarefa");
 
-                    b.HasIndex("ProjetoId");
+                    b.HasIndex("IdProjeto");
 
                     b.ToTable("Tarefa", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Tarefa", b =>
                 {
-                    b.HasOne("Domain.Entities.Projeto", null)
+                    b.HasOne("Domain.Entities.Projeto", "Projeto")
                         .WithMany("Tarefas")
-                        .HasForeignKey("ProjetoId");
+                        .HasForeignKey("IdProjeto")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Projeto");
                 });
 
             modelBuilder.Entity("Domain.Entities.Projeto", b =>

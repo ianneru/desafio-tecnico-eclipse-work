@@ -8,6 +8,6 @@ namespace Domain.Services.Interfaces
         Task<long> CreateAsync(Entities.Tarefa tarefa, CancellationToken cancellationToken);
         Task DeleteAsync(long id, CancellationToken cancellationToken);
 
-        Task<Tarefa> GetByProjeto(long idProjeto, CancellationToken cancellationToken);
+        Task<IEnumerable<Tarefa>> GetByProjeto(long idProjeto, CancellationToken cancellationToken);
     }
 }

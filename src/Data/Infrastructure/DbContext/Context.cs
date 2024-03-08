@@ -18,9 +18,17 @@ public class Context(DbContextOptions<Context> options) : Microsoft.EntityFramew
         var modelTarefa = modelBuilder.Entity<Tarefa>();
 
         modelTarefa.ToTable("Tarefa");
+        modelTarefa.HasKey(o => o.IdTarefa);
 
         var modelProjeto = modelBuilder.Entity<Projeto>();
 
         modelProjeto.ToTable("Projeto");
+        modelProjeto.HasKey(o => o.IdProjeto);
+
+        modelBuilder.Entity<Projeto>()
+            .HasMany(s => s.Tarefas)
+            .WithOne(s => s.Projeto)
+            .HasForeignKey(s=> s.IdProjeto)
+            .IsRequired();
     }
 }

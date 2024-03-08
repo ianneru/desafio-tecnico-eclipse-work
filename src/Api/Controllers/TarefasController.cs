@@ -17,7 +17,7 @@ namespace Api.Controllers
         [HttpGet]
         [SwaggerResponse((int)HttpStatusCode.OK, "Sucesso ao retornar tarefa por projeto.",
          typeof(TarefaResponseDto))]
-        public async Task<ActionResult<TarefaResponseDto>> Get(long idProjeto,CancellationToken cancellationToken)
+        public async Task<ActionResult<IEnumerable<TarefaResponseDto>>> Get(long idProjeto,CancellationToken cancellationToken)
         {
             try
             {

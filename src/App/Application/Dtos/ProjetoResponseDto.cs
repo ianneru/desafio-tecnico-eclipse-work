@@ -2,7 +2,9 @@
 {
     public class ProjetoResponseDto
     {
-        public long Id { get; set; }    
-        public string Titulo { get; set; }
+        public long IdProjeto { get; set; }    
+        public required string Titulo { get; set; }
+
+        public ICollection<TarefaResponseDto>? Tarefas { get; set; }
     }
 }

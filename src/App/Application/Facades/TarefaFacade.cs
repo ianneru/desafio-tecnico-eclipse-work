@@ -29,11 +29,11 @@ namespace Application.Facades
             await tarefaService.DeleteAsync(id, cancellationToken);
         }
 
-        public async Task<TarefaResponseDto> GetByProjeto(long idProjeto,CancellationToken cancellationToken)
+        public async Task<IEnumerable<TarefaResponseDto>> GetByProjeto(long idProjeto,CancellationToken cancellationToken)
         {
             var result = await tarefaService.GetByProjeto(idProjeto,cancellationToken);
 
-            var tarefa = mapper.Map<TarefaResponseDto>(result);
+            var tarefa = mapper.Map<IEnumerable<TarefaResponseDto>>(result);
 
             return tarefa;
         }

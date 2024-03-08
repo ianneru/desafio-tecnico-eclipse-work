@@ -1,4 +1,5 @@
 ﻿using Domain.Enums;
+using Domain.Exceptions;
 
 namespace Domain.Entities
 {
@@ -26,6 +27,12 @@ namespace Domain.Entities
         public static void SetStatus(this Tarefa tarefa, EnumStatusTarefa status)
         {
             tarefa.Status = status;
+        }
+
+        public static void ValidateProjeto(this Tarefa tarefa)
+        {
+            if (tarefa.IdProjeto == 0)
+                throw new ValidationException("A tarefa precisa estar associado com projeto.");
         }
     }
 }

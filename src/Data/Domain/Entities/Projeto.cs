@@ -2,7 +2,9 @@
 {
     public class Projeto : EntityBase
     {
+        public long IdProjeto { get; set; }
+
         public required string Titulo { get; set; }
-        public ICollection<Tarefa>? Tarefas { get; set; }
+        public virtual ICollection<Tarefa>? Tarefas { get; set; }
     }
 }

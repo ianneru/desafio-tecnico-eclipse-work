@@ -4,7 +4,7 @@ namespace Application.Dtos
 {
     public class TarefaResponseDto
     {
-        public long Id { get; set; }
+        public long IdTarefa { get; set; }
 
         public required string Titulo { get; set; }
 

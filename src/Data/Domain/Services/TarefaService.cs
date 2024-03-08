@@ -21,13 +21,12 @@ namespace Domain.Services
 
             await tarefaRepository.SaveChangesAsync(cancellationToken);
 
-            return tarefa.Id;
+            return tarefa.IdTarefa;
         }
 
         private static void Validate(Tarefa tarefa)
         {
-       
-
+            tarefa.ValidateProjeto();
         }
 
         public async Task UpdateAsync(long id, Tarefa tarefa, CancellationToken cancellationToken)
@@ -62,11 +61,11 @@ namespace Domain.Services
             await tarefaRepository.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<Tarefa> GetByProjeto(long idProjeto, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Tarefa>> GetByProjeto(long idProjeto, CancellationToken cancellationToken)
         {
-            var tarefa = await tarefaRepository.GetByIdAsync(idProjeto, cancellationToken);
+            var tarefas = await tarefaRepository.GetByProjeto(idProjeto, cancellationToken);
 
-            return tarefa;
+            return tarefas;
         }
     }
 }
