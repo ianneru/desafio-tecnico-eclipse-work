@@ -1,12 +1,11 @@
+using Api.Helpers;
 using Application.Dtos;
 using Application.Facades.Interfaces;
 using CorrelationId.Abstractions;
+using Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Annotations;
-using System.ComponentModel.DataAnnotations;
 using System.Net;
-using System.Threading;
 
 namespace Api.Controllers
 {
@@ -25,7 +24,7 @@ namespace Api.Controllers
                 var result = await projetoFacade.GetAll(cancellationToken);
                 return Ok(result);
             }
-            catch (ValidationException e)
+            catch (Domain.Exceptions.ValidationException e)
             {
                 logger.LogError(e, "Validation Exception Details. CorrelationId: {correlationId}",
                     correlationContext.CorrelationContext.CorrelationId);
@@ -45,6 +44,40 @@ namespace Api.Controllers
             var id = await projetoFacade.CreateAsync(customerRequestDto, cancellationToken);
 
             return CreatedAtAction(nameof(Get), new { id }, new { id });
+        }
+
+        [HttpPut("{id}")]
+        [SwaggerResponse((int)HttpStatusCode.BadRequest, "Id inválido.")]
+        [SwaggerResponse((int)HttpStatusCode.NotFound, "Tarefa não encontrada")]
+        [SwaggerResponse((int)HttpStatusCode.NoContent, "Tarefa foi atualizada.")]
+        public async Task<IActionResult> Put(long id, [FromBody] ProjetoRequestDto projetoRequestDto, CancellationToken cancellationToken)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                if (id <= 0) return
+                        BadRequest(ControllerHelper.CreateProblemDetails("Id", "Id inválido."));
+
+                await projetoFacade.UpdateAsync(id, projetoRequestDto, cancellationToken);
+
+                return NoContent();
+            }
+            catch (EntityNotFoundException e)
+            {
+                logger.LogError(e, "Entity Not Found Exception. CorrelationId: {correlationId}",
+                    correlationContext.CorrelationContext.CorrelationId);
+
+                return NotFound();
+            }
+            catch (Domain.Exceptions.ValidationException e)
+            {
+                logger.LogError(e, "Validation Exception. CorrelationId: {correlationId}",
+                    correlationContext.CorrelationContext.CorrelationId);
+
+                return BadRequest(e.Message);
+            }
         }
     }
 }
