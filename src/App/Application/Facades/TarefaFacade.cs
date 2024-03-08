@@ -6,20 +6,30 @@ using Domain.Services.Interfaces;
 
 namespace Application.Facades
 {
-    public class TarefaFacade(ITarefaService tarefaService, IMapper mapper) : ITarefaFacade
+    public class TarefaFacade(ITarefaService tarefaService,IProjetoService projetoService,IMapper mapper) : ITarefaFacade
     {
         public async Task UpdateAsync(long id, TarefaRequestDto tarefaRequestDto, CancellationToken cancellationToken)
         {
             var tarefa = mapper.Map<Domain.Entities.Tarefa>(tarefaRequestDto);
 
-            await tarefaService.UpdateAsync(id, tarefa, cancellationToken);
+            var projeto = projetoService
+                            .GetAll(cancellationToken)
+                            .Result
+                            .FirstOrDefault(o => o.IdProjeto == tarefa.IdProjeto);
+
+            await tarefaService.UpdateAsync(id, tarefa,projeto, cancellationToken);
         }
 
         public async Task<long> CreateAsync(TarefaRequestDto tarefaRequestDto, CancellationToken cancellationToken)
         {
             var tarefa = mapper.Map<Domain.Entities.Tarefa>(tarefaRequestDto);
 
-            var id = await tarefaService.CreateAsync(tarefa, cancellationToken);
+            var projeto = projetoService
+                            .GetAll(cancellationToken)
+                            .Result
+                            .FirstOrDefault(o=> o.IdProjeto == tarefa.IdProjeto);
+
+            var id = await tarefaService.CreateAsync(tarefa, projeto, cancellationToken);
 
             return id;
         }

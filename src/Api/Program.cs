@@ -17,6 +17,7 @@ using Microsoft.OpenApi.Models;
 using NLog.Web;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.IO.Compression;
+using System.Text.Json.Serialization;
 
 namespace Api
 {
@@ -28,7 +29,16 @@ namespace Api
 
             builder.Host.UseNLog();
 
-            builder.Services.AddControllers(x => x.Filters.Add<ExceptionFilter>());
+            builder.Services
+                .AddControllers(x => x.Filters.Add<ExceptionFilter>())
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+
+                    options.JsonSerializerOptions.DefaultIgnoreCondition =
+                        JsonIgnoreCondition.WhenWritingNull;
+                });
+
             builder.Services.AddProblemDetails();
             builder.Services.AddDefaultCorrelationId(ConfigureCorrelationId());
 
