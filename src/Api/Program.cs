@@ -44,13 +44,17 @@ namespace Api
 
             builder.Services.AddTransient<IProjetoFacade, ProjetoFacade>();
             builder.Services.AddTransient<ITarefaFacade, TarefaFacade>();
+            builder.Services.AddTransient<ITarefaComentarioFacade, TarefaComentarioFacade>();
             builder.Services.AddTransient<IProjetoService, ProjetoService>();
             builder.Services.AddTransient<ITarefaService, TarefaService>();
+            builder.Services.AddTransient<ITarefaComentarioService, TarefaComentarioService>();
             builder.Services.AddTransient<IProjetoRepository, ProjetoRepository>();
             builder.Services.AddTransient<ITarefaRepository, TarefaRepository>();
+            builder.Services.AddTransient<ITarefaComentarioRepository, TarefaComentarioRepository>();
 
             builder.Services.AddAutoMapper(typeof(ProjetoProfile));
             builder.Services.AddAutoMapper(typeof(TarefaProfile));
+            builder.Services.AddAutoMapper(typeof(TarefaComentarioProfile));
 
             builder.Services.AddEndpointsApiExplorer();
 

@@ -16,5 +16,7 @@ namespace Domain.Entities
         public long IdProjeto { get; set; }
 
         public virtual Projeto Projeto { get; set; }
+
+        public virtual ICollection<TarefaComentario>? TarefaComentarios { get; set; }
     }
 }

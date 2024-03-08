@@ -31,7 +31,7 @@ namespace Domain.Services
         {
             tarefa.ValidateProjeto();
 
-            if(projeto.Tarefas.Any() && projeto.Tarefas.Count > 20)
+            if((projeto.Tarefas ?? []).Any() && projeto.Tarefas.Count > 20)
                 throw new Domain.Exceptions.ValidationException(Messages.TAREFAS_PROJETO_20);
         }
 
@@ -75,6 +75,11 @@ namespace Domain.Services
             var tarefas = await tarefaRepository.GetByProjeto(idProjeto, cancellationToken);
 
             return tarefas;
+        }
+
+        public async Task<Tarefa> GetById(long id, CancellationToken cancellationToken)
+        {
+            return await tarefaRepository.GetByIdAsync(id, cancellationToken);
         }
     }
 }

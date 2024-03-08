@@ -8,6 +8,8 @@ public class Context(DbContextOptions<Context> options) : Microsoft.EntityFramew
     public DbSet<Tarefa> Tarefas { get; set; }
     public DbSet<Projeto> Projetos { get; set; }
 
+    public DbSet<TarefaComentario> TarefasComentarios { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         CustomerModelBuilder(modelBuilder);
@@ -29,6 +31,17 @@ public class Context(DbContextOptions<Context> options) : Microsoft.EntityFramew
             .HasMany(s => s.Tarefas)
             .WithOne(s => s.Projeto)
             .HasForeignKey(s=> s.IdProjeto)
+            .IsRequired();
+
+        var modelTarefaComentario = modelBuilder.Entity<TarefaComentario>();
+        
+        modelTarefaComentario.ToTable("TarefaComentario");
+        modelTarefaComentario.HasKey(o => o.IdTarefaComentario);
+
+        modelBuilder.Entity<Tarefa>()
+            .HasMany(s => s.TarefaComentarios)
+            .WithOne(s => s.Tarefa)
+            .HasForeignKey(s => s.IdTarefa)
             .IsRequired();
     }
 }
