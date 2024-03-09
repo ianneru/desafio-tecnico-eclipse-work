@@ -45,39 +45,5 @@ namespace Api.Controllers
 
             return CreatedAtAction(nameof(Get), new { id }, new { id });
         }
-
-        [HttpPut("{id}")]
-        [SwaggerResponse((int)HttpStatusCode.BadRequest, "Id inválido.")]
-        [SwaggerResponse((int)HttpStatusCode.NotFound, "Tarefa não encontrada")]
-        [SwaggerResponse((int)HttpStatusCode.NoContent, "Tarefa foi atualizada.")]
-        public async Task<IActionResult> Put(long id, [FromBody] ProjetoRequestDto projetoRequestDto, CancellationToken cancellationToken)
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
-
-                if (id <= 0) return
-                        BadRequest(ControllerHelper.CreateProblemDetails("Id", "Id inválido."));
-
-                await projetoFacade.UpdateAsync(id, projetoRequestDto, cancellationToken);
-
-                return NoContent();
-            }
-            catch (EntityNotFoundException e)
-            {
-                logger.LogError(e, "Entity Not Found Exception. CorrelationId: {correlationId}",
-                    correlationContext.CorrelationContext.CorrelationId);
-
-                return NotFound();
-            }
-            catch (Domain.Exceptions.ValidationException e)
-            {
-                logger.LogError(e, "Validation Exception. CorrelationId: {correlationId}",
-                    correlationContext.CorrelationContext.CorrelationId);
-
-                return BadRequest(e.Message);
-            }
-        }
     }
 }

@@ -4,7 +4,7 @@ namespace Domain.Services.Interfaces
 {
     public interface ITarefaService
     {
-        Task UpdateAsync(long id, Tarefa tarefa, Projeto? projeto, CancellationToken cancellationToken);
+        Task<IEnumerable<Tuple<string, object, object>>> UpdateAsync(long id, Tarefa tarefa, Projeto? projeto, CancellationToken cancellationToken);
         Task<long> CreateAsync(Entities.Tarefa tarefa, Projeto? projeto, CancellationToken cancellationToken);
         Task DeleteAsync(long id, CancellationToken cancellationToken);
 

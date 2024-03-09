@@ -8,7 +8,7 @@ namespace Domain.Services
 {
     public class TarefaService(ITarefaRepository tarefaRepository) : ITarefaService
     {
-        public async Task<long> CreateAsync(Tarefa tarefa, Projeto? projeto,CancellationToken cancellationToken)
+        public async Task<long> CreateAsync(Tarefa tarefa, Projeto? projeto, CancellationToken cancellationToken)
         {
             if (tarefa is null)
                 throw new Exceptions.ValidationException(Messages.TAREFA_NULO);
@@ -35,7 +35,8 @@ namespace Domain.Services
                 throw new Domain.Exceptions.ValidationException(Messages.TAREFAS_PROJETO_20);
         }
 
-        public async Task UpdateAsync(long id, Tarefa tarefa,Projeto? projeto, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Tuple<string,object,object>>>
+            UpdateAsync(long id, Tarefa tarefa,Projeto? projeto, CancellationToken cancellationToken)
         {
             if (id <= 0) 
                 throw new Exceptions.ValidationException(Messages.ID_INVALIDO);
@@ -54,8 +55,13 @@ namespace Domain.Services
             entity.SetDataVencimento(tarefa.DataVencimento);
             entity.SetTitulo(tarefa.Titulo);
             entity.SetStatus(tarefa.Status);
+            entity.SetPrioridade(tarefa.Prioridade);
+
+            var changes = tarefaRepository.GetChanges(entity);
 
             await tarefaRepository.SaveChangesAsync(cancellationToken);
+
+            return changes;
         }
 
         public async Task DeleteAsync(long id, CancellationToken cancellationToken)

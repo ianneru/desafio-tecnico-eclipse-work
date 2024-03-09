@@ -11,5 +11,7 @@ namespace Application.Dtos
         public DateTime DataVencimento { get; set; }
 
         public long IdProjeto { get; set; }
+
+        public UsuarioRequestDto Usuario { get; set; }
     }
 }

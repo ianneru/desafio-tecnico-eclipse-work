@@ -29,6 +29,11 @@ namespace Domain.Entities
             tarefa.Status = status;
         }
 
+        public static void SetPrioridade(this Tarefa tarefa, EnumPrioridadeTarefa prioridadeTarefa)
+        {
+            tarefa.Prioridade = prioridadeTarefa;
+        }
+
         public static void ValidateProjeto(this Tarefa tarefa)
         {
             if (tarefa.IdProjeto == 0)

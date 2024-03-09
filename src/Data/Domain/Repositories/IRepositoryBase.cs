@@ -1,4 +1,6 @@
-﻿namespace Domain.Repositories
+﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+
+namespace Domain.Repositories
 {
     public interface IRepositoryBase<TEntity> : IDisposable where TEntity : class
     {
@@ -16,5 +18,7 @@
         void Update(TEntity entity);
         void Remove(TEntity entity);
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+
+        IEnumerable<Tuple<string, object, object>> GetChanges(TEntity entity);
     }
 }

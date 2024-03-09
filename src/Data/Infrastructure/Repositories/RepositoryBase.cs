@@ -1,6 +1,7 @@
 ﻿using Domain.Repositories;
 using Infrastructure.DbContext;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Infrastructure.Repositories
 {
@@ -60,7 +61,27 @@ namespace Infrastructure.Repositories
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {
-            return await DbContext.SaveChangesAsync(cancellationToken);
+            var returned =  await DbContext.SaveChangesAsync(cancellationToken);
+
+            return returned;
+        }
+
+        public IEnumerable<Tuple<string, object, object>> GetChanges(TEntity entity)
+        {
+            var changes = new List<Tuple<string, object, object>>();
+            
+            var entry = DbContext.Entry(entity);
+
+            foreach (var item in entry.CurrentValues.Properties)
+            {
+                var propEnrty = entry.Property(item.Name);
+                if (propEnrty.IsModified)
+                {
+                    changes.Add(new Tuple<string, object, object>(item.Name, propEnrty.OriginalValue, propEnrty.CurrentValue));
+                }
+            }
+
+            return changes;
         }
 
         public void Dispose()

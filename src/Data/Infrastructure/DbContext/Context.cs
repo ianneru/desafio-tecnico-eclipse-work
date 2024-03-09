@@ -10,6 +10,9 @@ public class Context(DbContextOptions<Context> options) : Microsoft.EntityFramew
 
     public DbSet<TarefaComentario> TarefasComentarios { get; set; }
 
+    public DbSet<TarefaHistorico> TarefasHistoricos { get; set; }
+    public DbSet<Usuario> Usuarios { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         CustomerModelBuilder(modelBuilder);
@@ -43,5 +46,23 @@ public class Context(DbContextOptions<Context> options) : Microsoft.EntityFramew
             .WithOne(s => s.Tarefa)
             .HasForeignKey(s => s.IdTarefa)
             .IsRequired();
+
+        var modelUsuario = modelBuilder.Entity<Usuario>();
+
+        modelUsuario.ToTable("Usuario");
+        modelUsuario.HasKey(o => o.IdUsuario);
+
+        modelBuilder.Entity<Usuario>()
+            .HasData(new Usuario { IdUsuario = 1, Nome = "Pedro", Funcao = Domain.Enums.EnumFuncao.Gerente });
+        modelBuilder.Entity<Usuario>()
+            .HasData(new Usuario { IdUsuario = 2, Nome = "Gustavo", Funcao = Domain.Enums.EnumFuncao.Desenvolvedor });
+        modelBuilder.Entity<Usuario>()
+            .HasData(new Usuario { IdUsuario = 3, Nome = "Aline", Funcao = Domain.Enums.EnumFuncao.PO });
+
+        var modelTarefaHistorico = modelBuilder.Entity<TarefaHistorico>();
+
+        modelTarefaHistorico.ToTable("TarefaHistorico");
+        modelTarefaHistorico.HasKey(o => o.IdTarefaHistorico);
+
     }
 }
