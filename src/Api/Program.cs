@@ -45,6 +45,7 @@ namespace Api
             builder.Services.AddTransient<IProjetoFacade, ProjetoFacade>();
             builder.Services.AddTransient<ITarefaFacade, TarefaFacade>();
             builder.Services.AddTransient<ITarefaComentarioFacade, TarefaComentarioFacade>();
+            builder.Services.AddTransient<ITarefaHistoricoFacade, TarefaHistoricoFacade>();
 
             builder.Services.AddTransient<IProjetoService, ProjetoService>();
             builder.Services.AddTransient<ITarefaService, TarefaService>();

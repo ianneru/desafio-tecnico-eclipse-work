@@ -6,5 +6,6 @@ namespace Domain.Services.Interfaces
     {
         Task<long> CreateAsync(Entities.TarefaHistorico tarefaHistorico, Tarefa? tarefa, CancellationToken cancellationToken);
 
+        Task<IEnumerable<TarefaHistorico>> GetByTarefa(long idTarefa, CancellationToken cancellationToken);
     }
 }

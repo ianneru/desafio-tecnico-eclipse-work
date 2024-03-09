@@ -26,5 +26,13 @@ namespace Domain.Services
 
             return tarefaHistorico.IdTarefaHistorico;
         }
+
+        public async Task<IEnumerable<TarefaHistorico>> GetByTarefa(long idTarefa, CancellationToken cancellationToken)
+        {
+            return tarefaHistoricoRepository
+                .GetAllAsync(cancellationToken)
+                .Result
+                .Where(o => o.IdTarefa == idTarefa);
+        }
     }
 }
