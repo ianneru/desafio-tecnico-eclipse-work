@@ -27,12 +27,13 @@ namespace Domain.Services
             return tarefaHistorico.IdTarefaHistorico;
         }
 
-        public async Task<IEnumerable<TarefaHistorico>> GetByTarefa(long idTarefa, CancellationToken cancellationToken)
+        public Task<IEnumerable<TarefaHistorico>> GetByTarefa(long idTarefa, CancellationToken cancellationToken)
         {
-            return tarefaHistoricoRepository
+            return Task.FromResult<IEnumerable<TarefaHistorico>>(tarefaHistoricoRepository
                 .GetAllAsync(cancellationToken)
                 .Result
-                .Where(o => o.IdTarefa == idTarefa);
+                .Where(o => o.IdTarefa == idTarefa)
+                .ToList());
         }
     }
 }

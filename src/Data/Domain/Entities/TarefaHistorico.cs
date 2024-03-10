@@ -13,5 +13,7 @@ namespace Domain.Entities
         public string CamposAlterados { get; set; }
 
         public DateTime DataAlteracao { get; set; }
+
+        public virtual Usuario Usuario { get; set; }
     }
 }

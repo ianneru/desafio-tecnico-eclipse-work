@@ -9,5 +9,7 @@ namespace Domain.Entities
         public required string Nome { get; set; }
 
         public EnumFuncao Funcao { get; set; }
+
+        public virtual TarefaHistorico TarefaHistorico { get; set;}
     }
 }

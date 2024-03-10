@@ -62,7 +62,8 @@ namespace Api
             builder.Services.AddAutoMapper(typeof(ProjetoProfile));
             builder.Services.AddAutoMapper(typeof(TarefaProfile));
             builder.Services.AddAutoMapper(typeof(TarefaComentarioProfile));
-
+            builder.Services.AddAutoMapper(typeof(TarefaHistoricoProfile));
+            
             builder.Services.AddEndpointsApiExplorer();
 
             builder.Services.Configure<GzipCompressionProviderOptions>(options => options.Level = CompressionLevel.Optimal);

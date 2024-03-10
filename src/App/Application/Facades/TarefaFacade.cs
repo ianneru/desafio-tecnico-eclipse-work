@@ -28,6 +28,7 @@ namespace Application.Facades
                 {
                     IdUsuario = usuario?.IdUsuario,
                     IdTarefa = id,
+                    Created = DateTime.Now,
                     CamposAlterados = string.Join(", ",
                         changes.Select(x => "['" + x.Item1 + "','" + x.Item2 + "']"))
                 },
@@ -55,6 +56,7 @@ namespace Application.Facades
                     {
                         IdUsuario = usuario?.IdUsuario,
                         IdTarefa = id,
+                        Created = DateTime.Now,
                         CamposAlterados = "Tarefa criada"
                     },
                     tarefa, cancellationToken);

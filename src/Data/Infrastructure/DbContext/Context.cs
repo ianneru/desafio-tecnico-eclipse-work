@@ -63,6 +63,5 @@ public class Context(DbContextOptions<Context> options) : Microsoft.EntityFramew
 
         modelTarefaHistorico.ToTable("TarefaHistorico");
         modelTarefaHistorico.HasKey(o => o.IdTarefaHistorico);
-
     }
 }
