@@ -1,6 +1,8 @@
 # Desafio Técnico Eclipse Works
 
-Este desafio técnico representa uma api de tarefas em .NET/C#
+Este desafio técnico representa uma api de tarefas em .NET/C#.
+
+Os requisitos funcionais estão em [Requisitos Eclipse Works](https://meteor-ocelot-f0d.notion.site/NET-C-5281edbec2e4480d98552e5ca0242c5b )
 
 ## Requisitos
 - [Docker](https://www.docker.com/)
@@ -13,6 +15,8 @@ Esta solução contém o uso de :
 - POSTS
 - Swagger
 - Conectividade com SQL Server
+- Entity Framework
+- Ef Migration
 
 Primeiro rode o comando do docker-compose para criar os containeres SQL Server e Api :
 
@@ -25,6 +29,8 @@ E então rode :
 ```
 docker-compose up
 ```
+
+Não se preocupe em rodar o Entity Framework Migration, pois está sinalizado para rodar ao iniciar a Api.
 
 A api estará disponível em [localhost](http://localhost:8888:80)
 
