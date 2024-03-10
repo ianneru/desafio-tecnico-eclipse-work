@@ -34,6 +34,12 @@ Não se preocupe em rodar o Entity Framework Migration, pois está sinalizado pa
 
 A api estará disponível em [[localhost](http://localhost:8888:80)]
 
+A api contém 3 usuários que possam ser utilizados para as funcionalidades.
+
+-  Aline. Função PO.
+-  Gustavo. Função Desenvolvedor.
+-  Pedro. Função Gerente.
+
 ## Dúvidas com o Po ( Fase 2 ):
 
 - Embora a remoção de projeto não foi incluída na listagem da api, a regra de deleção do projeto foi exigida.
