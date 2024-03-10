@@ -34,12 +34,15 @@ Não se preocupe em rodar o Entity Framework Migration, pois está sinalizado pa
 
 A api estará disponível em [[localhost](http://localhost:8888:80)]
 
-## Dúvidas com o Po:
+## Dúvidas com o Po ( Fase 2 ):
 
-1- Embora a remoção de projeto não foi incluída na listagem da api, a regra de deleção do projeto foi exigida.
-2- 
+- Embora a remoção de projeto não foi incluída na listagem da api, a regra de deleção do projeto foi exigida.
+- Quais os critérios das prioridades de tarefas?
+- Quais os usuários que farão o uso da api?
+- Edição e conclusão do projeto após a finalização das tarefas.
 
-## Melhorias propostas:
+## Melhorias propostas ( Fase 3 ):
 
-1- A inclusão de `docker compose` para orquestrar containeres de sql server e api, já implementado na solução.
-2- 
+-  A inclusão de `docker compose` para orquestrar containeres de sql server e api, já implementado na solução.
+-  Documentação mais detalhada no Swagger.
+-  
