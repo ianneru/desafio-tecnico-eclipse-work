@@ -44,5 +44,5 @@ A api estará disponível em [[localhost](http://localhost:8888:80)]
 ## Melhorias propostas ( Fase 3 ):
 
 -  A inclusão de `docker compose` para orquestrar containeres de sql server e api, já implementado na solução.
--  Documentação mais detalhada no Swagger.
--  
+-  Documentação mais detalhada da api com Swagger.
+-  Criação de endpoint para mostrar logs de erros.
