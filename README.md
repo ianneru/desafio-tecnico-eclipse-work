@@ -1,7 +1,10 @@
-# desafio-tecnico-eclipse-work
+# Desafio Técnico Eclipse Works
+
 Este desafio técnico representa uma api de tarefas em .NET/C#
 
-
+## Requisitos
+- [Docker](https://www.docker.com/)
+- Instalação local do [dotnet8](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
 
 ## Dúvidas com o Po:
 
