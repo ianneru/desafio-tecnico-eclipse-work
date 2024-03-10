@@ -32,7 +32,7 @@ docker-compose up
 
 Não se preocupe em rodar o Entity Framework Migration, pois está sinalizado para rodar ao iniciar a Api.
 
-A api estará disponível em [localhost](http://localhost:8888:80)
+A api estará disponível em [[localhost](http://localhost:8888:80)]
 
 ## Dúvidas com o Po:
 
