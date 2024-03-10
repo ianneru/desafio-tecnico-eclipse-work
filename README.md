@@ -26,6 +26,8 @@ E então rode :
 docker-compose up
 ```
 
+A api estará disponível em [localhost](http://localhost:8888:80)
+
 ## Dúvidas com o Po:
 
 1- Embora a remoção de projeto não foi incluída na listagem da api, a regra de deleção do projeto foi exigida.
